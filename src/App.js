@@ -32,10 +32,16 @@ function App() {
     console.log('In App.js');
     console.log(expense);
   };
+
+  const getYear = year => {
+    console.log("Getting year from App.js");
+    console.log(year);
+  };
+
   return(
     <div className='background'>
       <NewExpense onAddExpense={addExpenseHandler}/>
-      <Expenses expenses={expenses}/>
+      <Expenses expenses={expenses} getYear={getYear}/>
     </div>
   );
 }
