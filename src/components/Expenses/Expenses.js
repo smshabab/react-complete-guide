@@ -1,33 +1,34 @@
-import React,{useState} from 'react';
-import './Expenses.css';
-import ExpenseItem from './ExpenseItem';
+import React, { useState } from 'react';
+
 import Card from '../UI/Card';
 import ExpensesFilter from './ExpensesFilter';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import ExpensesList from './ExpensesList';
+import ExpensesChart from './ExpensesChart';
+import './Expenses.css';
 
-function Expenses(props){
+const Expenses = (props) => {
+  const [filteredYear, setFilteredYear] = useState('2020');
 
-    const [GetYear, SetYear] = useState('2022');
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
 
-    const getYear = (year) => {
-        SetYear(year);
-        props.getYear(year);
-    };
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
 
-    let expenseItems = [];
-    const itemNotFound = <p style={{color:"#fff", margin: "0 auto"}}>NO ITEMS FOUND</p>;
-    
-    (props.getYear!==GetYear) ? expenseItems = props.expenses.filter(obj => obj.date.getFullYear().toString()===GetYear).map(expense=><ExpenseItem key={expense.id} title={expense.title} amount={expense.amount} date={expense.date}/>) :
-    expenseItems = props.expenses.map(expense=><ExpenseItem key={expense.id} title={expense.title} amount={expense.amount} date={expense.date}/>);
-    
-    const displayExpenses = (expenseItems.length>=1) ? expenseItems : itemNotFound;
-
-    return(
-        <Card className='expenses'>
-            <ExpensesFilter selected={GetYear} getYear={getYear} />
-            {displayExpenses}
-        </Card>
-    );
-}
+  return (
+    <div>
+      <Card className='expenses'>
+        <ExpensesFilter
+          selected={filteredYear}
+          onChangeFilter={filterChangeHandler}
+        />
+        <ExpensesChart expenses={filteredExpenses} />
+        <ExpensesList items={filteredExpenses} />
+      </Card>
+    </div>
+  );
+};
 
 export default Expenses;

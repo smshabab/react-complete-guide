@@ -1,8 +1,7 @@
-import React,{useState} from 'react';
-import './App.css';
-import Expenses from './components/Expenses/Expenses';
+import React, { useState } from 'react';
+
 import NewExpense from './components/NewExpense/NewExpense';
-import AddNewExpense from './components/NewExpense/AddNewExpense';
+import Expenses from './components/Expenses/Expenses';
 
 const DUMMY_EXPENSES = [
   {
@@ -11,10 +10,7 @@ const DUMMY_EXPENSES = [
     amount: 94.12,
     date: new Date(2020, 7, 14),
   },
-  { id: 'e2', 
-    title: 'New TV',
-    amount: 799.49,
-    date: new Date(2021, 2, 12) },
+  { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
   {
     id: 'e3',
     title: 'Car Insurance',
@@ -29,31 +25,28 @@ const DUMMY_EXPENSES = [
   },
 ];
 
-function App() {
-  const [getExpenses, setExpenses] = useState(DUMMY_EXPENSES);
-  const [showForm, setShowForm] = useState(false);
+const App = () => {
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
 
-  const addExpenseHandler = expense => {
-    setExpenses((prevExpenses)=>{
+  const addExpenseHandler = (expense) => {
+    setExpenses((prevExpenses) => {
       return [expense, ...prevExpenses];
     });
   };
 
-  const getYear = year => {
-    console.log(year);
-  };
+  // return React.createElement(
+  //   'div',
+  //   {},
+  //   React.createElement('h2', {}, "Let's get started!"),
+  //   React.createElement(Expenses, { items: expenses })
+  // );
 
-  const changeShowForm = () => {
-    console.log("button clicked");
-    setShowForm((prevProp)=>!prevProp);
-  };
-
-  return(
-    <div className='background'>
-      {showForm ? <NewExpense changeShowForm={changeShowForm} onAddExpense={addExpenseHandler}/> : <AddNewExpense changeShowForm={changeShowForm}/>}
-      <Expenses expenses={getExpenses} getYear={getYear}/>
+  return (
+    <div>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={expenses} />
     </div>
   );
-}
+};
 
 export default App;
